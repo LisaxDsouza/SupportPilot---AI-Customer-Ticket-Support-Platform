@@ -1,3 +1,11 @@
+# Environment Variables
+.env
+.env.*
+!.env.example
+backend/.env
+.env.local
+.env.*.local
+
 # Python
 __pycache__/
 *.py[cod]
@@ -7,6 +15,7 @@ __pycache__/
 env/
 venv/
 .venv/
+backend/.venv/
 ENV/
 build/
 develop-eggs/
@@ -23,11 +32,8 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-
-# Virtual environments
-.env
-.env.local
-.env.*.local
+.pytest_cache/
+.mypy_cache/
 
 # Database
 *.sqlite3
@@ -42,6 +48,12 @@ yarn-error.log*
 .pnpm-debug.log*
 frontend/dist/
 frontend/build/
+dist/
+coverage/
+*.log
+*.tsbuildinfo
+frontend/vite.config.js
+frontend/vite.config.d.ts
 .eslintcache
 
 # IDE & OS
