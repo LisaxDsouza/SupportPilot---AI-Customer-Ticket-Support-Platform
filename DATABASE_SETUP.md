@@ -14,16 +14,16 @@ Share these credentials with your team for local development and API connections
 | **Port** | `5432` |
 | **Database Name** | `supportpilot_db` |
 | **Username** | `postgres` |
-| **Password** | `password123` |
+| **Password** | Set locally in `.env` as `POSTGRES_PASSWORD` |
 
 ### Connection Strings:
 * **FastAPI Backend (SQLAlchemy + Psycopg 3):**
   ```text
-  postgresql+psycopg://postgres:password123@localhost:5432/supportpilot_db
+  postgresql+psycopg://postgres:<YOUR_PASSWORD>@localhost:5432/supportpilot_db
   ```
 * **Standard URI (pgAdmin, DBeaver, TablePlus, psql):**
   ```text
-  postgresql://postgres:password123@localhost:5432/supportpilot_db
+  postgresql://postgres:<YOUR_PASSWORD>@localhost:5432/supportpilot_db
   ```
 
 ---
@@ -64,7 +64,7 @@ If one developer hosts the database and others want to connect to it without run
 
 2. **Teammates** update their `.env` file:
    ```env
-   DATABASE_URL=postgresql+psycopg://postgres:password123@192.168.1.15:5432/supportpilot_db
+   DATABASE_URL=postgresql+psycopg://postgres:<YOUR_PASSWORD>@192.168.1.15:5432/supportpilot_db
    ```
 
 ---

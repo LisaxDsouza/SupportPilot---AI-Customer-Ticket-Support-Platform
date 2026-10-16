@@ -28,13 +28,13 @@ The container will automatically initialize all tables defined in `SCHEMAS.md` a
 | **Port** | `5432` | Exposed on host |
 | **Database** | `supportpilot_db` | Main application database |
 | **Username** | `postgres` | Superuser |
-| **Password** | `password123` | Configurable in `.env` |
+| **Password** | Set locally in `.env` as `POSTGRES_PASSWORD` | Never commit credentials |
 
 ### Connection Strings:
 * **SQLAlchemy / Psycopg 3:**  
-  `postgresql+psycopg://postgres:password123@localhost:5432/supportpilot_db`
+  `postgresql+psycopg://postgres:<YOUR_PASSWORD>@localhost:5432/supportpilot_db`
 * **Standard URI (pgAdmin, DBeaver, psql):**  
-  `postgresql://postgres:password123@localhost:5432/supportpilot_db`
+  `postgresql://postgres:<YOUR_PASSWORD>@localhost:5432/supportpilot_db`
 
 ---
 
@@ -88,7 +88,7 @@ Because the port is mapped to `0.0.0.0:5432`, other developers on the same Wi-Fi
    * **macOS / Linux:** Run `ifconfig` or `ip a`
 2. Teammates can connect using:
    ```text
-   postgresql+psycopg://postgres:password123@192.168.1.100:5432/supportpilot_db
+   postgresql+psycopg://postgres:<YOUR_PASSWORD>@192.168.1.100:5432/supportpilot_db
    ```
 *(Ensure Windows Defender Firewall allows incoming TCP connections on port 5432 if connecting from another device).*
 
