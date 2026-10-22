@@ -16,6 +16,7 @@ class UserModel(Base):
     __table_args__ = (CheckConstraint("role IN ('EMPLOYEE', 'SUPPORT_ENGINEER', 'ADMIN')", name="ck_users_role"),)
     user_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(150), unique=True, nullable=False)
+    password_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)
     full_name: Mapped[str] = mapped_column(String(100), nullable=False)
     department: Mapped[str] = mapped_column(String(50), nullable=False)
     role: Mapped[str] = mapped_column(String(30), default="EMPLOYEE", server_default="EMPLOYEE")
@@ -44,6 +45,8 @@ class TicketModel(Base):
     status: Mapped[str] = mapped_column(String(30), default="OPEN", server_default="OPEN")
     source: Mapped[str] = mapped_column(String(20), default="WEB_PORTAL", server_default="WEB_PORTAL")
     assigned_team: Mapped[str] = mapped_column(String(50), default="IT_SERVICE_DESK", server_default="IT_SERVICE_DESK")
+    assigned_to_email: Mapped[str | None] = mapped_column(String(150), nullable=True)
+    resolved_by_email: Mapped[str | None] = mapped_column(String(150), nullable=True)
     # Python name avoids collision with SQLAlchemy Declarative Base.metadata.
     metadata_: Mapped[dict[str, Any]] = mapped_column("metadata", JsonType, default=dict, server_default="{}")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
@@ -57,7 +60,7 @@ class TicketModel(Base):
 
 class TicketResponseModel(Base):
     __tablename__ = "ticket_responses"
-    __table_args__ = (CheckConstraint("validation_status IN ('PENDING', 'AUTO_APPROVED', 'REJECTED')", name="ck_ticket_responses_validation_status"),)
+    __table_args__ = (CheckConstraint("validation_status IN ('PENDING', 'APPROVED', 'AUTO_APPROVED', 'REJECTED')", name="ck_ticket_responses_validation_status"),)
     response_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     ticket_id: Mapped[int] = mapped_column(ForeignKey("tickets.ticket_id", ondelete="CASCADE"), nullable=False)
     solution_text: Mapped[str] = mapped_column(Text, nullable=False)
