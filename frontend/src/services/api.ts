@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { Ticket, TicketCreatePayload } from '../types/ticket';
+import type { Citation, TicketSummary } from '../types/resolution';
 
 const client = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api/v1', timeout: 8000 });
 
@@ -14,4 +15,20 @@ export async function fetchTickets(): Promise<Ticket[]> {
 
 export async function createTicket(payload: TicketCreatePayload): Promise<Ticket> {
   try { return (await client.post<Ticket>('/tickets', payload)).data; } catch (error) { throw messageFor(error); }
+}
+
+export async function fetchTicketSummary(ticketId: number): Promise<TicketSummary> {
+  try { return (await client.post<TicketSummary>(`/tickets/${ticketId}/summarize`)).data; } catch (error) { throw messageFor(error); }
+}
+
+export async function searchKnowledge(query: string, category?: string): Promise<Citation[]> {
+  try {
+    return (await client.post<{ citations: Citation[] }>('/kb/search', {
+      query,
+      category,
+      top_k: 4,
+    })).data.citations;
+  } catch (error) {
+    throw messageFor(error);
+  }
 }
