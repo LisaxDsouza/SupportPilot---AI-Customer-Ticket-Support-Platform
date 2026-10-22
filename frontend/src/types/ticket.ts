@@ -36,6 +36,8 @@ export interface Ticket {
   status: Status;
   source: string;
   assigned_team: string;
+  assigned_to_email?: string | null;
+  resolved_by_email?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -50,3 +52,44 @@ export interface ClassificationResult {
   reasoning: string;
   suggested_team: string;
 }
+
+export interface CitationItem {
+  article_id: number;
+  title: string;
+  category: string;
+  similarity: number;
+  snippet: string;
+}
+
+export interface TicketResponseDetail {
+  response_id: number;
+  ticket_id: number;
+  solution_text: string;
+  confidence_score: number;
+  citations: CitationItem[];
+  agent_trace?: Array<Record<string, unknown>>;
+  validation_status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  created_at: string;
+}
+
+export interface ResponseApprovalPayload {
+  validation_status: 'APPROVED' | 'REJECTED' | 'PENDING';
+  edited_solution_text?: string;
+  mark_ticket_resolved?: boolean;
+  resolved_by_email?: string;
+}
+
+export interface ResolvedSolutionItem {
+  ticket_id: number;
+  ticket_code: string;
+  title: string;
+  category: string;
+  priority: string;
+  status: string;
+  resolved_at: string | null;
+  resolved_by_email: string | null;
+  solution_text: string;
+  citations: CitationItem[];
+  confidence_score: number;
+}
+

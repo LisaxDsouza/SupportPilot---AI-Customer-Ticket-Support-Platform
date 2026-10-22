@@ -1,14 +1,35 @@
-"""Interface-only contracts for the future RAG and resolution milestones."""
-from pydantic import BaseModel
+from datetime import datetime
+from typing import Any, List, Optional
+from pydantic import BaseModel, Field
 
 
-class ResolutionSuggestion(BaseModel):
+class CitationItem(BaseModel):
+    article_id: int
+    title: str
+    category: str
+    similarity: float
+    snippet: str
+
+
+class ResponseGenerationRequest(BaseModel):
+    custom_instructions: Optional[str] = None
+
+
+class ResponseApprovalRequest(BaseModel):
+    validation_status: str = Field("APPROVED", description="APPROVED, REJECTED, or PENDING")
+    edited_solution_text: Optional[str] = None
+    mark_ticket_resolved: bool = True
+    resolved_by_email: Optional[str] = None
+
+
+class TicketResponseDetail(BaseModel):
+    response_id: int
+    ticket_id: int
     solution_text: str
     confidence_score: float
+    citations: List[dict[str, Any]] = Field(default_factory=list)
+    agent_trace: List[dict[str, Any]] = Field(default_factory=list)
+    validation_status: str
+    created_at: datetime
 
-
-class RetrievalService:
-    """Future interface; no RAG implementation is included in this scaffold."""
-
-    def retrieve(self, query: str) -> list[dict]:
-        raise NotImplementedError("TODO: Person 1 implements retrieval in the RAG milestone.")
+    model_config = {"from_attributes": True}
