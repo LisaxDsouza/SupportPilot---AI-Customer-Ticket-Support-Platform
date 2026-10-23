@@ -46,11 +46,12 @@ def _offline_generate_response(
         steps.append("**Step 1:** Verify your local network and restart the application.")
         steps.append("**Step 2:** Ensure your corporate credentials and MFA tokens are active.")
 
+    formatted_steps = "\n\n".join(steps)
     solution = (
         f"Hi there,\n\n"
         f"Thank you for contacting the IT Service Desk regarding **\"{title}\"**.\n\n"
         f"We investigated your issue and identified the following grounded troubleshooting procedure:\n\n"
-        f"{'\n\n'.join(steps)}\n\n"
+        f"{formatted_steps}\n\n"
         f"If the issue persists after following these steps, please reply to this ticket and we will escalate immediately.\n\n"
         f"Best regards,\n"
         f"**SupportPilot IT Incident Desk**"
