@@ -40,11 +40,22 @@ def get_ticket(db: Session, ticket_id: int) -> TicketModel | None:
     return db.get(TicketModel, ticket_id)
 
 
-def update_ticket_status(db: Session, ticket: TicketModel, status: str) -> TicketModel:
+def update_ticket_status(db: Session, ticket: TicketModel, status: str, resolved_by_email: str | None = None) -> TicketModel:
     ticket.status = status
     if status == "RESOLVED":
         ticket.resolved_at = datetime.now(timezone.utc)
-    db.add(ActivityLogModel(ticket_id=ticket.ticket_id, action=status, actor_type="SYSTEM", details={"status": status}))
+        if resolved_by_email:
+            ticket.resolved_by_email = resolved_by_email
+    db.add(ActivityLogModel(ticket_id=ticket.ticket_id, action=status, actor_type="USER" if resolved_by_email else "SYSTEM", details={"status": status, "resolved_by": resolved_by_email}))
     db.commit()
     db.refresh(ticket)
     return ticket
+
+
+def assign_ticket(db: Session, ticket: TicketModel, assigned_to_email: str) -> TicketModel:
+    ticket.assigned_to_email = assigned_to_email
+    db.add(ActivityLogModel(ticket_id=ticket.ticket_id, action="ASSIGNED", actor_type="ADMIN", details={"assigned_to": assigned_to_email}))
+    db.commit()
+    db.refresh(ticket)
+    return ticket
+

@@ -39,9 +39,16 @@ class TicketResponse(BaseModel):
     status: str
     source: str
     assigned_team: str
+    assigned_to_email: str | None = None
+    resolved_by_email: str | None = None
     created_at: datetime
     updated_at: datetime
 
 
 class TicketStatusUpdate(BaseModel):
     status: Status
+    resolved_by_email: EmailStr | None = None
+
+
+class TicketAssignRequest(BaseModel):
+    assigned_to_email: EmailStr
